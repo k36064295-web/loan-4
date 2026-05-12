@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🌐 WORLD BANK BANGLADESH</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f1f5f9;
+}
+
+.header{
+background:#0047d4;
+padding:15px;
+display:flex;
+align-items:center;
+gap:12px;
+color:white;
+font-size:20px;
+font-weight:bold;
+}
+
+.logo{
+width:50px;
+height:50px;
+border-radius:50%;
+background:white;
+object-fit:cover;
+}
+
+.slider{
+width:100%;
+height:220px;
+overflow:hidden;
+position:relative;
+}
+
+.slider img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.welcome{
+background:white;
+margin:15px;
+padding:25px;
+border-radius:20px;
+box-shadow:0 0 12px rgba(0,0,0,0.08);
+text-align:center;
+}
+
+.welcome h1{
+color:#0047d4;
+font-size:28px;
+margin-bottom:10px;
+}
+
+.welcome p{
+font-size:15px;
+color:#475569;
+line-height:26px;
+}
+
+.flash{
+margin-top:15px;
+background:#0047d4;
+color:white;
+padding:12px;
+border-radius:14px;
+font-size:13px;
+font-weight:bold;
+}
+
+.buttons{
+padding:15px;
+display:flex;
+gap:12px;
+}
+
+.buttons button{
+flex:1;
+padding:15px;
+border:none;
+border-radius:16px;
+background:#0047d4;
+color:white;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.notice{
+margin:15px;
+background:#09c63c;
+color:white;
+padding:14px;
+border-radius:15px;
+font-size:14px;
+font-weight:bold;
+text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<img
+src="logo.png"
+class="logo">
+
+<div>
+
+🌐 WORLD BANK BANGLADESH
+
+</div>
+
+</div>
+
+<!-- SLIDER -->
+
+<div class="slider">
+
+<img
+id="sliderImage"
+src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop">
+
+</div>
+
+<!-- WELCOME -->
+
+<div class="welcome">
+
+<h1>
+
+Welcome
+
+</h1>
+
+<p>
+
+WORLD BANK BANGLADESH এ আপনাকে স্বাগতম।  
+নিরাপদ ও দ্রুত লোন সেবার জন্য এখনই রেজিস্ট্রেশন করুন অথবা লগইন করুন।
+
+</p>
+
+<div class="flash">
+
+<marquee>
+আপনাকে WORLD BANK BANGLADESH এ স্বাগতম।
+✔ Secure Loan System |
+✔ Fast Verification |
+✔ Customer Support Available
+
+</marquee>
+
+</div>
+
+</div>
+
+<!-- BUTTONS -->
+
+<div class="buttons">
+
+<button onclick="window.location.href='login.html'">
+
+Login
+
+</button>
+
+<button onclick="window.location.href='register.html'">
+
+Register
+
+</button>
+
+</div>
+
+<!-- NOTICE -->
+
+<div class="notice">
+
+✔ আজকের লোন আবেদন যাচাই কার্যক্রম চলছে
+
+</div>
+
+<script>
+
+/* SLIDER */
+
+const sliderImages = [
+
+"https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop",
+
+"https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1200&auto=format&fit=crop",
+
+"https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=1200&auto=format&fit=crop",
+
+"https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=1200&auto=format&fit=crop"
+
+];
+
+let currentSlide = 0;
+
+setInterval(function(){
+
+currentSlide++;
+
+if(currentSlide >= sliderImages.length){
+
+currentSlide = 0;
+
+}
+
+document.getElementById("sliderImage").src =
+
+sliderImages[currentSlide];
+
+},3000);
+
+</script>
+
+</body>
+
+</html>

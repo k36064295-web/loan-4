@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f1f5f9;
+}
+
+.topbar{
+background:#0047d4;
+padding:14px;
+display:flex;
+align-items:center;
+gap:10px;
+color:white;
+font-weight:bold;
+font-size:18px;
+}
+
+.logo{
+width:45px;
+height:45px;
+border-radius:50%;
+background:white;
+object-fit:cover;
+}
+
+.container{
+padding:18px;
+}
+
+.box{
+background:white;
+padding:22px;
+border-radius:22px;
+box-shadow:0 0 15px rgba(0,0,0,0.08);
+}
+
+.title{
+text-align:center;
+font-size:24px;
+font-weight:bold;
+color:#0047d4;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:1px solid #cbd5e1;
+border-radius:14px;
+font-size:15px;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:16px;
+background:#0047d4;
+color:white;
+font-size:17px;
+font-weight:bold;
+}
+
+.register{
+text-align:center;
+margin-top:18px;
+font-size:14px;
+}
+
+.register a{
+color:#0047d4;
+font-weight:bold;
+text-decoration:none;
+}
+
+.flash{
+margin-top:18px;
+background:#0047d4;
+color:white;
+padding:12px;
+border-radius:14px;
+font-size:13px;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+
+<img
+src="logo.png"
+class="logo">
+
+<div>
+
+🌐 WORLD BANK BANGLADESH
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="box">
+
+<div class="title">
+
+Login Account
+
+</div>
+
+<input
+type="text"
+id="mobile"
+placeholder="Mobile Number">
+
+<input
+type="password"
+id="password"
+placeholder="Password">
+
+<button onclick="loginUser()">
+
+Login
+
+</button>
+
+<div class="register">
+
+No account?
+
+<a href="register.html">
+
+Register
+
+</a>
+
+</div>
+
+<div class="flash">
+
+<marquee>
+
+🔵 Secure Login Portal |
+✔ Customer Support Available |
+✔ Safe Digital Service
+
+</marquee>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getFirestore,
+doc,
+getDoc
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "YOUR_API_KEY",
+
+authDomain: "YOUR_DOMAIN",
+
+projectId: "YOUR_PROJECT_ID",
+
+storageBucket: "YOUR_BUCKET",
+
+messagingSenderId: "YOUR_ID",
+
+appId: "YOUR_APP_ID"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+window.loginUser =
+async function(){
+
+let mobile =
+document.getElementById("mobile").value;
+
+let password =
+document.getElementById("password").value;
+
+if(mobile=="" || password==""){
+
+alert("সব তথ্য পূরণ করুন");
+
+return;
+
+}
+
+const docRef =
+doc(db,"users",mobile);
+
+const docSnap =
+await getDoc(docRef);
+
+if(docSnap.exists()){
+
+let data =
+docSnap.data();
+
+if(data.password == password){
+
+localStorage.setItem(
+"userMobile",
+mobile
+);
+
+window.location.href =
+"dashboard.html";
+
+}
+
+else{
+
+alert("Wrong Password");
+
+}
+
+}
+
+else{
+
+alert("Account Not Found");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
